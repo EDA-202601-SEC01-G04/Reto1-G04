@@ -1,12 +1,14 @@
 import sys
-
+import App.logic as logic 
 
 def new_logic():
     """
         Se crea una instancia del controlador
     """
     #TODO: Llamar la función de la lógica donde se crean las estructuras de datos
-    pass
+    catalog = logic.new_logic()
+    return catalog
+    
 
 def print_menu():
     print("Bienvenido")
@@ -24,7 +26,7 @@ def load_data(control):
     Carga los datos
     """
     #TODO: Realizar la carga de datos
-    pass
+    return logic.load_data(logic.new_logic() , "computer_prices_small.csv" )
 
 
 def print_data(control, id):
@@ -97,6 +99,7 @@ def main():
         if int(inputs) == 0:
             print("Cargando información de los archivos ....\n")
             data = load_data(control)
+            
         elif int(inputs) == 1:
             print_req_1(control)
 
