@@ -122,16 +122,16 @@ def req_2(catalog, precio_max, precio_min):
     """
     t_inicio = time.perf_counter()
     
-    size = catalog["price"]["size"]
+    size = lt.size(catalog["price"])
     #separa las listas de cada categoría
-    precios = catalog["price"]["elements"]
-    ram = catalog["ram_gb"]["elements"] 
-    vram = catalog["vram_gb"]["elements"]
-    años = catalog["release_year"]["elements"]
-    modelos = catalog["model"]["elements"]
-    marcas = catalog["marca"]["elements"]
-    cpus = catalog["cpu_brand"]["elements"]
-    gpus = catalog["gpu_brand"]["elements"]
+    precios = catalog["price"]
+    ram = catalog["ram_gb"]
+    vram = catalog["vram_gb"]
+    años = catalog["release_year"]
+    modelos = catalog["model"]
+    marcas = catalog["brand"]
+    cpus = catalog["cpu_brand"]
+    gpus = catalog["gpu_brand"]
     #lleva la cuenta de cuandos PCs cumplen, y sus respectivos valores
     count = 0
     suma_ram = 0
@@ -143,38 +143,38 @@ def req_2(catalog, precio_max, precio_min):
     mayor_precio = None
     
     for i in range (size):
-        precio = float(precios[i])
+        precio = float(lt.get_element(precios, i))
         
         if precio_min<=precio<=precio_max:
             count += 1
-            suma_ram += float(ram[i])
-            suma_vram += float(vram[i])
+            suma_ram += float(lt.get_element(ram, i))
+            suma_vram += float(lt.get_element(vram, i))
             suma_precios += precio
             #busco el más moderno
-            año = int(años[i])
+            año = int(lt.get_element(años, i))
             if (moderno is None) or (año>moderno["año"]) or ((año==moderno["año"]) and precio>moderno["precio"]):
-                moderno = {"modelo": modelos[i], 
-                        "marca":marcas[i], 
-                        "año":años[i], 
-                        "cpu":cpus[i],
-                        "gpu":gpus[i],
-                        "precio":precio}
+                moderno = {"modelo": lt.get_element(modelos, i),
+                            "marca": lt.get_element(marcas, i),
+                            "año": año, 
+                            "cpu": lt.get_element(cpus, i),
+                            "gpu": lt.get_element(gpus, i),
+                            "precio": precio}
             #busco el mas barato        
             if (menor_precio is None) or (precio<menor_precio["precio"]):
-                menor_precio = {"modelo": modelos[i], 
-                           "marca":marcas[i], 
-                           "año":años[i], 
-                           "cpu":cpus[i],
-                           "gpu":gpus[i],
-                           "precio":precio}
+                menor_precio = {"modelo": lt.get_element(modelos, i),
+                                "marca": lt.get_element(marcas, i),
+                                "año": lt.get_element(años, i),
+                                "cpu": lt.get_element(cpus, i),
+                                "gpu": lt.get_element(gpus, i),
+                                "precio": precio}
             #busco el mas caro
             if (mayor_precio is None) or (precio>mayor_precio["precio"]):
-                mayor_precio = {"modelo": modelos[i], 
-                           "marca":marcas[i], 
-                           "año":años[i], 
-                           "cpu":cpus[i],
-                           "gpu":gpus[i],
-                           "precio":precio}
+                mayor_precio = {"modelo": lt.get_element(modelos, i),
+                                "marca": lt.get_element(marcas, i),
+                                "año": lt.get_element(años, i),
+                                "cpu": lt.get_element(cpus, i),
+                                "gpu": lt.get_element(gpus, i),
+                                "precio": precio}
     #promedios
     if count>0:
         promedio_ram = suma_ram/count
