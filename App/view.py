@@ -52,8 +52,6 @@ def print_req_1(control):
     print("El modelo del computador de menor precio dentro de la marca indicando su precio respectivo: " + str(menor["elements"]))     
     print("Tiempo de la ejecución del requerimiento en milisegundo: " + str(tiempo) )
     
-
-
 def print_req_2(control):
     """
         Función que imprime la solución del Requerimiento 2 en consola
@@ -76,8 +74,8 @@ def print_req_4(control):
     """
     cpu_brand = input("Escriba un cpu_brand ")
     gpu_model = input("Escriba un gpu_model ")
-    req2 = logic.req_4(load_data(control), cpu_brand, gpu_model)
-    tiempo, total, precio, vram, ram, cpu_boost, mayor = req2
+    req4 = logic.req_4(load_data(control), cpu_brand, gpu_model)
+    tiempo, total, precio, vram, ram, cpu_boost, mayor = req4
     print("Tiempo de la ejecución del requerimiento en milisegundos " + str(tiempo))
     print("Número total de computadores que cumplieron el filtro " + str(total))
     print("Precio promedio " + str(precio))
@@ -86,16 +84,23 @@ def print_req_4(control):
     print("Cpu_boost_ghz promedio " + str(cpu_boost))
     modelo1, marca1, año1, cpu_model1, precio1, modelo2, marca2, año2, cpu_model2, precio2 = mayor
     print("El primer computador costoso tiene modelo: " +str(modelo1)+ ", marca: " +str(marca1)+ " ,año: " +str(año1)+ " ,cpu_model: " +str(cpu_model1)+ " ,precio: " + str(precio1))
-    print("El primer computador costoso tiene modelo: " +str(modelo2)+ ", marca: " +str(marca2)+ " ,año: " +str(año2)+ " ,cpu_model: " +str(cpu_model2)+ " ,precio: " + str(precio2))
-    
-    
+    print("El primer computador costoso tiene modelo: " +str(modelo2)+ ", marca: " +str(marca2)+ " ,año: " +str(año2)+ " ,cpu_model: " +str(cpu_model2)+ " ,precio: " + str(precio2)) 
     
 def print_req_5(control):
     """
         Función que imprime la solución del Requerimiento 5 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    filtro = input("¿BARATO o CARO? ")
+    resolucion = input ("Escriba una resolucion ")
+    año_min = input ("Escriba un año mínimo de lanzamiento ")
+    año_max = input ("Escriba un año máximo de lanzamiento ")
+    req5 = logic.req_5(load_data(control), filtro, resolucion, año_min, año_max)
+    filtro, req5_time, total_computadores, computador_filtrado, promedio = req5
+    print("Tiempo de la ejecución del requerimiento en milisegundos: " + str(req5_time))
+    print("Filtro de selección del costo: "+ str(filtro))
+    print("Número total de computadores que cumplieron el filtro (resolución y año): "+ str(total_computadores))
+    print("Presentar el computador a la consulta (precio, resolución, año): " + str(computador_filtrado))
+    print("Presentar los computadores que cumplan el filtro (resolución y año): " + str(promedio))
 
 
 def print_req_6(control):
