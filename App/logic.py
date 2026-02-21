@@ -116,12 +116,86 @@ def req_1(catalog, brand):
     # TODO: Modificar el requerimiento 1
     
 
-def req_2(catalog):
+def req_2(catalog, precio_max, precio_min):
     """
     Retorna el resultado del requerimiento 2
     """
-    # TODO: Modificar el requerimiento 2
-    pass
+    t_inicio = time.perf_counter()
+    
+    size = catalog["price"]["size"]
+    #separa las listas de cada categoría
+    precios = catalog["price"]["elements"]
+    ram = catalog["ram_gb"]["elements"] 
+    vram = catalog["vram_gb"]["elements"]
+    años = catalog["release_year"]["elements"]
+    modelos = catalog["model"]["elements"]
+    marcas = catalog["marca"]["elements"]
+    cpus = catalog["cpu_brand"]["elements"]
+    gpus = catalog["gpu_brand"]["elements"]
+    #lleva la cuenta de cuandos PCs cumplen, y sus respectivos valores
+    count = 0
+    suma_ram = 0
+    suma_vram = 0
+    suma_precios = 0
+    #guarda los resultados que son un diccionario
+    moderno = None
+    menor_precio = None
+    mayor_precio = None
+    
+    for i in range (size):
+        precio = float(precios[i])
+        
+        if precio_min<=precio<=precio_max:
+            count += 1
+            suma_ram += float(ram[i])
+            suma_vram += float(vram[i])
+            suma_precios += precio
+            #busco el más moderno
+            año = int(años[i])
+            if (moderno is None) or (año>moderno["año"]) or ((año==moderno["año"]) and precio>moderno["precio"]):
+                moderno = {"modelo": modelos[i], 
+                        "marca":marcas[i], 
+                        "año":años[i], 
+                        "cpu":cpus[i],
+                        "gpu":gpus[i],
+                        "precio":precio}
+            #busco el mas barato        
+            if (menor_precio is None) or (precio<menor_precio["precio"]):
+                menor_precio = {"modelo": modelos[i], 
+                           "marca":marcas[i], 
+                           "año":años[i], 
+                           "cpu":cpus[i],
+                           "gpu":gpus[i],
+                           "precio":precio}
+            #busco el mas caro
+            if (mayor_precio is None) or (precio>mayor_precio["precio"]):
+                mayor_precio = {"modelo": modelos[i], 
+                           "marca":marcas[i], 
+                           "año":años[i], 
+                           "cpu":cpus[i],
+                           "gpu":gpus[i],
+                           "precio":precio}
+    #promedios
+    if count>0:
+        promedio_ram = suma_ram/count
+        promedio_vram = suma_vram/count
+        promedio_precios = suma_precios/count
+    else: 
+        promedio_ram = 0
+        promedio_precios = 0
+        promedio_vram = 0
+    
+    t_fin = time.perf_counter()
+    tiempo_ejecucion = (t_fin - t_inicio)*1000
+    
+    return {"tiempo_ejecucion_ms":tiempo_ejecucion,
+            "cantidad_computadores":count,
+            "promedio_ram":promedio_ram,
+            "promedio_vram":promedio_vram,
+            "promedio_precios":promedio_precios,
+            "computador_mas_moderno": moderno,
+            "computador_menor_precio":menor_precio,
+            "computador_mayor_precio":mayor_precio}
 
 
 def req_3(catalog):
