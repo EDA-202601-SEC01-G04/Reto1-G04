@@ -133,7 +133,8 @@ def new_logic_single_linked_list():
         'battery_wh' : None,
         'charger_watts' : None, 
         'psu_watts': None,
-        'wifi bluetooth': None,  
+        'wifi': None,  
+        'bluetooth': None,  
         'weight_kg': None, 
         'warranty_months':None, 
         'price': None,
@@ -186,7 +187,7 @@ def load_data_single_linked_list(catalog, filename):
     for cada_computador in input_file:
        
        for llave in cada_computador:
-        catalog[llave] = sl.insert_element(catalog[llave], pos, cada_computador[llave])
+        sl.add_last (catalog[llave], cada_computador[llave])
         pos +=1
     return catalog
 # Funciones de consulta sobre el catálogo
@@ -304,95 +305,105 @@ def req_3(catalog):
     # TODO: Modificar el requerimiento 3
     pass
 
-
+#REQUISITO 4 COMPLETADO CON SINGLE_LINKED_LIST
 def req_4(catalog, cpu_brand, gpu_model):
     """
     Retorna el resultado del requerimiento 4
     """
-    """start_time = get_time()
+    start_time = get_time()
     
+     #Crear la lista filtrada de una categoría específica, únicamente con los valores que cumplen con la resolución y años enviados por el usuario.
     def lista_filtrada (categoria):
-        lista = lt.new_list()
-        pos = 0
-        for posicion in range(0, lt.size(catalog["cpu_brand"])):
-            if (catalog["cpu_brand"]["elements"][posicion] == cpu_brand) and (catalog["gpu_model"]["elements"][posicion] == gpu_model):
-                pos = pos + 1
-                lista = lt.insert_element(lista, pos, catalog[categoria]["elements"][posicion])
+        lista = sl.new_list()
+        for posicion in range(0, sl.size(catalog["cpu_brand"])):
+            if (sl.get_element(catalog["cpu_brand"], posicion) == cpu_brand) and (sl.get_element(catalog["gpu_model"], posicion) == gpu_model):
+                sl.add_last(lista, sl.get_element(catalog[categoria], posicion))
         return lista
-    
-    def total_computadores (categoria):
-        return lt.size(lista_filtrada(categoria))
-    
+ 
+    #Encontrar promedio de la lista con funciones de single_linked_list.
     def promedio(lista):
-        lista_original = lista
-        lista = lista["elements"]
-        total = 0
-        for cada_valor in lista:
-            total = float(cada_valor) + total
-        promedio = total/ lt.size(lista_original) 
+        curr = lista["first"]
+        total = float(curr["info"])
+        for i in range(0, sl.size(lista) - 1):
+            curr = curr["next"]
+            total = total + float(curr["info"])
+            
+        promedio = total/sl.size(lista)
         return promedio
     
-    def mayor(lista_precios, lista_modelos, lista_peso, lista_cpu, lista_marca, lista_año):
-        lista = lista_precios["elements"]
-        lista_modelos = lista_modelos["elements"]
-        lista_peso = lista_peso["elements"]
-        lista_marca = lista_marca["elements"]
-        lista_año = lista_año["elements"]
-        lista_cpu = lista_cpu["elements"]
-        
-        mayor = float(lista[0])
-        posicion_mayor = 0
-        pos = 0
-        for cada_valor in lista:
-            pos = pos + 1
-            if (float(cada_valor) > mayor):
-                mayor = float(cada_valor)
-                posicion_mayor = pos
-            elif (float(cada_valor) == mayor):
-                if (lista_peso[posicion_mayor] > lista_peso[pos]):
-                    mayor = float(cada_valor)
-                    posicion_mayor = pos
-        modelo = lista_modelos [posicion_mayor]
-        marca = lista_marca[posicion_mayor]
-        año = lista_año[posicion_mayor]
-        cpu = lista_cpu[posicion_mayor]
-        
-        return modelo, marca, año, cpu, mayor, posicion_mayor
-                    
-    def ejecucion(categoria):
-        lista = lista_filtrada(categoria)
-        promedios = promedio(lista)
-        return promedios 
-    
-    def ejecucion_mayores(precio, modelo, peso, cpu, marca, año):
+    #Crear todas las listas filtradas para hallar el promedio.
+    def listas_filtradas_promedio(precio, vram, ram, cpu_boost):
         lista_precios = lista_filtrada(precio)
-        lista_modelos = lista_filtrada(modelo)
-        lista_peso = lista_filtrada(peso)
-        lista_cpu = lista_filtrada(cpu)
+        lista_vram = lista_filtrada(vram)
+        lista_ram = lista_filtrada(ram)
+        lista_cpu_boost = lista_filtrada(cpu_boost)
+        return lista_precios, lista_vram, lista_ram, lista_cpu_boost
+    
+    #Crear todas las listas filtradas para hallar el info de los computadores más costosos.
+    def listas_filtradas_mayor(model, marca, año, cpu_model, precio, peso):
+        lista_modelo = lista_filtrada(model)
         lista_marca = lista_filtrada(marca)
         lista_año = lista_filtrada(año)
-        modelo1, marca1, año1, cpu_model1, precio1, pos = mayor(lista_precios, lista_modelos, lista_peso, lista_cpu, lista_marca, lista_año)
-        
-        lista_precios = lt.delete_element(lista_filtrada(precio), pos) 
-        lista_modelos = lt.delete_element(lista_filtrada(modelo), pos) 
-        lista_peso = lt.delete_element(lista_filtrada(peso), pos) 
-        lista_cpu = lt.delete_element(lista_filtrada(cpu), pos) 
-        lista_marca = lt.delete_element(lista_filtrada(marca), pos) 
-        lista_año = lt.delete_element(lista_filtrada(año), pos) 
-        modelo2, marca2, año2, cpu_model2, precio2, pos = mayor(lista_precios, lista_modelos, lista_peso, lista_cpu, lista_marca, lista_año)
-        
-        return modelo1, marca1, año1, cpu_model1, precio1, modelo2, marca2, año2, cpu_model2, precio2
-        
-        
+        lista_cpu_model = lista_filtrada(cpu_model)
+        lista_precio = lista_filtrada(precio)
+        lista_peso = lista_filtrada(peso)
+        return lista_modelo, lista_marca, lista_año, lista_cpu_model, lista_precio, lista_peso
+    
+    #Encontrar el promedio de 5 categorías.
+    def promedios_5 (precio, vram, ram, cpu_boost):
+        lista_precios, lista_vram, lista_ram, lista_cpu_boost = listas_filtradas_promedio(precio, vram, ram, cpu_boost) 
+        tamaño_computadores = sl.size(lista_precios)
+        promedio_precios = promedio(lista_precios)
+        promedio_vram = promedio(lista_vram)
+        promedio_ram = promedio(lista_ram)
+        promedio_cpu_boost = promedio(lista_cpu_boost)
+        return tamaño_computadores, promedio_precios, promedio_vram, promedio_ram, promedio_cpu_boost
+   
+    #Encontrar el computador más costoso.
+    def computador_mas_costoso (lista, lista_peso):
+        curr = lista["first"]
+        mayor = curr
+        posicion_mayor = 0
+        for i in range(1, sl.size(lista)):
+            curr = curr["next"]
+            if float(curr["info"]) > float((mayor["info"])):
+                mayor = curr
+                posicion_mayor = i
+            elif float(curr["info"]) == float((mayor["info"])):
+                if float(sl.get_element(lista_peso, i)) < float(sl.get_element(lista_peso, posicion_mayor)):
+                    mayor = curr
+                    posicion_mayor = i
+        return mayor, posicion_mayor
+    
+    #Encontrar los dos computadores más costosos.
+    def dos_mayores (lista, lista_peso): 
+        mayor_1, posicion_mayor_1 = computador_mas_costoso (lista, lista_peso)
+        lista = sl.delete_element(lista, posicion_mayor_1)
+        mayor_2, posicion_mayor_2 = computador_mas_costoso (lista, lista_peso)
+        if (posicion_mayor_2 >= posicion_mayor_1):
+            posicion_mayor_2 = posicion_mayor_2 + 1
+        mayor_1 = mayor_1["info"]
+        mayor_2 = mayor_2["info"]
+        return mayor_1, posicion_mayor_1, mayor_2, posicion_mayor_2 
+    
+    #Encontrar la info demlos dos computadores más costosos.
+    def info_mas_costosos (model, marca, año, cpu_model, precio, peso):
+            lista_modelo, lista_marca, lista_año, lista_cpu_model, lista_precio, lista_peso = listas_filtradas_mayor(model, marca, año, cpu_model, precio, peso)
+            mayor_1, posicion_mayor_1, mayor_2, posicion_mayor_2 = dos_mayores (lista_precio, lista_peso)
+            modelo1 = sl.get_element(lista_modelo, posicion_mayor_1)
+            modelo2 = sl.get_element(lista_modelo, posicion_mayor_2)
+            marca1 = sl.get_element(lista_marca, posicion_mayor_1)
+            marca2= sl.get_element(lista_marca, posicion_mayor_2)
+            año1 = sl.get_element(lista_año, posicion_mayor_1)
+            año2 = sl.get_element(lista_año, posicion_mayor_2)
+            cpu_model1 = sl.get_element(lista_cpu_model, posicion_mayor_1)
+            cpu_model2 = sl.get_element(lista_cpu_model, posicion_mayor_2)
+            return mayor_1, mayor_2, modelo1, modelo2, marca1, marca2, año1, año2, cpu_model1, cpu_model2
+    
     
     end_time = get_time()
     req4_time = delta_time(start_time, end_time)
-
-    
-    
-    return req4_time, total_computadores("cpu_brand"), ejecucion("price"), ejecucion("vram_gb"), ejecucion("ram_gb"), ejecucion("cpu_boost_ghz"), ejecucion_mayores("price", "model", "weight_kg", "cpu_model", "brand", "release_year")"""
-
-    pass
+    return req4_time, promedios_5("price", "vram_gb", "ram_gb", "cpu_boost_ghz"), info_mas_costosos ("model", "brand", "release_year", "cpu_model", "price", "weight_kg")
 
 #REQUISITO 5 COMPLETADO CON ARRAY_LIST
 def req_5(catalog, filtro, resolucion, año_min, año_max):

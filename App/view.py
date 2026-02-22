@@ -7,7 +7,10 @@ def new_logic():
     """
     catalog = logic.new_logic()
     return catalog
-    
+
+def new_logic_single_linked_list():
+    catalog_sll = logic.new_logic_single_linked_list()
+    return catalog_sll   
 
 def print_menu():
     print("Bienvenido")
@@ -26,6 +29,8 @@ def load_data(control):
     """
     return logic.load_data(logic.new_logic() , "computer_prices_small.csv" )
 
+def load_data_single_sinked_list(control):
+    return logic.load_data_single_linked_list(logic.new_logic_single_linked_list() , "computer_prices_small.csv" )
 
 def print_data(control, id):
     """
@@ -68,23 +73,25 @@ def print_req_3(control):
     pass
 
 
-def print_req_4(control):
+def print_req_4(control_sll):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
+    
     cpu_brand = input("Escriba un cpu_brand ")
     gpu_model = input("Escriba un gpu_model ")
-    req4 = logic.req_4(load_data(control), cpu_brand, gpu_model)
-    tiempo, total, precio, vram, ram, cpu_boost, mayor = req4
+    req4 = logic.req_4(load_data_single_sinked_list(control_sll), cpu_brand, gpu_model)
+    tiempo, promedios, info = req4
+    numero_computadores, precio_promedio, vram_promedio, ram_promedio, velocidad_promedio = promedios
+    mayor_1, mayor_2, modelo1, modelo2, marca1, marca2, año1, año2, cpu_model1, cpu_model2 = info
     print("Tiempo de la ejecución del requerimiento en milisegundos " + str(tiempo))
-    print("Número total de computadores que cumplieron el filtro " + str(total))
-    print("Precio promedio " + str(precio))
-    print("VRAM promedio " + str(vram))
-    print("RAM promedio " + str(ram))
-    print("Cpu_boost_ghz promedio " + str(cpu_boost))
-    modelo1, marca1, año1, cpu_model1, precio1, modelo2, marca2, año2, cpu_model2, precio2 = mayor
-    print("El primer computador costoso tiene modelo: " +str(modelo1)+ ", marca: " +str(marca1)+ " ,año: " +str(año1)+ " ,cpu_model: " +str(cpu_model1)+ " ,precio: " + str(precio1))
-    print("El primer computador costoso tiene modelo: " +str(modelo2)+ ", marca: " +str(marca2)+ " ,año: " +str(año2)+ " ,cpu_model: " +str(cpu_model2)+ " ,precio: " + str(precio2)) 
+    print("Número total de computadores que cumplieron el filtro " + str(numero_computadores))
+    print("Precio promedio " + str(precio_promedio))
+    print("VRAM promedio " + str(vram_promedio))
+    print("RAM promedio " + str(ram_promedio))
+    print("Cpu_boost_ghz promedio " + str(velocidad_promedio))
+    print("El primer computador costoso tiene modelo: " +str(modelo1)+ ", marca: " +str(marca1)+ " ,año: " +str(año1)+ " ,cpu_model: " +str(cpu_model1)+ " ,precio: " + str(mayor_1))
+    print("El primer computador costoso tiene modelo: " +str(modelo2)+ ", marca: " +str(marca2)+ " ,año: " +str(año2)+ " ,cpu_model: " +str(cpu_model2)+ " ,precio: " + str(mayor_2)) 
     
 def print_req_5(control):
     """
@@ -112,6 +119,7 @@ def print_req_6(control):
 
 # Se crea la lógica asociado a la vista
 control = new_logic()
+control_sll = new_logic_single_linked_list
 
 # main del ejercicio
 def main():
@@ -126,6 +134,7 @@ def main():
         if int(inputs) == 0:
             print("Cargando información de los archivos ....\n")
             data = load_data(control)
+            data1 = load_data_single_sinked_list(control_sll)
             
         elif int(inputs) == 1:
             print_req_1(control)
