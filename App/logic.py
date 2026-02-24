@@ -570,7 +570,7 @@ def req_5(catalog, filtro, resolucion, año_min, año_max):
     return filtro, req5_time, total_computadores("resolution"), computador_filtrado (filtro, 'display_size_in', "gpu_tier", 'display_type', "weight_kg", "price"), promedio_filtrado('display_size_in', "gpu_tier", 'display_type', "weight_kg", "price")
 
 
-def req_6(catalog):
+def req_6(catalog, año_inicial, año_final):
     """
     Retorna el resultado del requerimiento 6
     """
