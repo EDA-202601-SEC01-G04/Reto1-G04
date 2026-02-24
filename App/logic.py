@@ -207,11 +207,16 @@ def req_1(catalog, brand):
                 pos = pos + 1
                 lista = lt.insert_element(lista, pos, catalog[categoria]["elements"][posicion])
         return lista
+
+#Acceder al número de computadores que cumplen con la marca
+    def solo_marca():
+        tamaño = 0
+        for posicion in range(0, lt.size(catalog["brand"])):
+            if (catalog["brand"]["elements"][posicion] == brand):
+                tamaño = tamaño + 1
+        return tamaño
   
-#Crear la lista por la marca enviada por el usuario y acceder a su tamaño.  
-    def solo_marca(categoria):
-        marca = lista_filtrada(categoria)
-        return lt.size(marca)   
+#
       
  #Encuentra el promedio, mayor y menor de la lista usando funciones de array_list 
     def promedio(lista):
@@ -289,7 +294,7 @@ def req_1(catalog, brand):
     end_time = get_time()
     req1_time = delta_time(start_time, end_time)
     
-    return solo_marca("brand"), ejecucion("price"), ejecucion("ram_gb"), ejecucion("vram_gb"), ejecucion("cpu_cores"), ejecucion("release_year"), modelo("price", "model", "weight_kg"), req1_time
+    return solo_marca(), ejecucion("price"), ejecucion("ram_gb"), ejecucion("vram_gb"), ejecucion("cpu_cores"), ejecucion("release_year"), modelo("price", "model", "weight_kg"), req1_time
 
 def req_2(catalog, precio_max, precio_min):
     """
