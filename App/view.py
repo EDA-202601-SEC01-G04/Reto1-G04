@@ -61,8 +61,13 @@ def print_req_2(control):
     """
         Función que imprime la solución del Requerimiento 2 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 2
-    pass
+    lista = load_data(control)
+    precio_max = float(input("Escriba el precio máximo: "))
+    precio_min = float(input("Escriba el precio mínimo: "))
+    req2 = logic.req_2(lista,precio_max, precio_min)
+    print ("Resultado: \n")
+    print (req2)
+
 
 
 def print_req_3(control):
@@ -114,8 +119,13 @@ def print_req_6(control):
     """
         Función que imprime la solución del Requerimiento 6 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 6
-    pass
+    lista = load_data(control)
+    año_inicial = int(input("Escriba el año mínimo del rango: "))
+    año_final = int(input("Escriba el año máximo del rango: "))
+    req6 = logic.req_6(lista,año_inicial,año_final)
+    
+    print ("Resultado: \n")
+    print(req6)
 
 # Se crea la lógica asociado a la vista
 control = new_logic()
@@ -151,7 +161,7 @@ def main():
         elif int(inputs) == 5:
             print_req_5(control)
 
-        elif int(inputs) == 5:
+        elif int(inputs) == 6:
             print_req_6(control)
 
         elif int(inputs) == 7:
